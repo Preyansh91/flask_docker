@@ -1,0 +1,40 @@
+version: '3.0'
+
+services:
+  db:
+    build: mysql/.
+    ports:
+      - "3306:3306"
+    volumes:
+      - perf_db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+          
+
+
+  web:
+#    restart: always
+#    build: .
+    image: preyansh91/uwsgi_myproject
+    ports:
+      - "8001:8001"
+    volumes:
+      - static:/home/myproject/static
+    depends_on: 
+      - db
+
+  nginx: 
+    build: ./nginx/.
+    ports:
+      - "80:80"
+    volumes:
+      - static:/home/myproject/static
+    links:
+      - web:web
+
+volumes:
+  static:
+    external: true
+  perf_db:
+    external: true

@@ -1,0 +1,9 @@
+version: '2.0'
+
+services:
+  app:
+#    restart: always
+#    build: .
+    image: preyansh91/uwsgi_myproject
+    ports:
+      - "8001:8001"
